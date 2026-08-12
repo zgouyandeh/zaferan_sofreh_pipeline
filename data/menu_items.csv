@@ -1,0 +1,169 @@
+restaurant_id,item_id,name,category,price,ingredients,is_vegetarian,spice_level
+ZAF-THR-001,ITEM-101,Mast-o Khiar,Starter,66000,"Yogurt, Cucumber, Mint, Dried Rose Petals",True,None
+ZAF-THR-001,ITEM-102,Kashke Bademjan,Starter,90000,"Eggplant, Whey (Kashk), Fried Onion, Mint",True,Mild
+ZAF-THR-001,ITEM-103,Mirza Ghasemi,Starter,88000,"Smoked Eggplant, Tomato, Garlic, Egg",True,Mild
+ZAF-THR-001,ITEM-104,Dolme Barg,Starter,107000,"Grape Leaves, Rice, Herbs, Ground Meat",False,Mild
+ZAF-THR-001,ITEM-105,Salad Shirazi,Starter,56000,"Cucumber, Tomato, Onion, Lime, Mint",True,None
+ZAF-THR-001,ITEM-201,Kuku Sabzi,Main Course,122000,"Herbs, Egg, Walnuts, Barberries",True,None
+ZAF-THR-001,ITEM-202,Adas Polo,Main Course,135000,"Rice, Lentils, Raisins, Dates, Fried Onion",True,Mild
+ZAF-THR-001,ITEM-203,Ash Reshteh,Main Course,101000,"Noodles, Herbs, Beans, Kashk",True,Mild
+ZAF-THR-001,ITEM-204,Sabzi Polo,Main Course,94000,"Herbed Basmati Rice, Dill, Parsley",True,None
+ZAF-THR-001,ITEM-205,Baghali Polo,Main Course,110000,"Rice, Fava Beans, Dill",True,None
+ZAF-THR-001,ITEM-301,Chelo Kabab Koobideh,Main Course,277000,"Ground Lamb & Beef Skewers, Saffron Rice, Grilled Tomato",False,Mild
+ZAF-THR-001,ITEM-302,Joojeh Kabab,Main Course,260000,"Saffron Marinated Chicken, Grilled Tomato, Rice",False,Mild
+ZAF-THR-001,ITEM-303,Ghormeh Sabzi,Main Course,233000,"Lamb, Herbs, Dried Lime, Kidney Beans",False,Medium
+ZAF-THR-001,ITEM-304,Fesenjan,Main Course,262000,"Chicken, Walnut, Pomegranate Molasses",False,Mild
+ZAF-THR-001,ITEM-305,Zereshk Polo ba Morgh,Main Course,233000,"Saffron Rice, Barberries, Roast Chicken",False,None
+ZAF-THR-001,ITEM-306,Tahchin Morgh,Main Course,221000,"Saffron Rice Cake, Chicken, Yogurt",False,None
+ZAF-THR-001,ITEM-307,Abgoosht (Dizi),Main Course,190000,"Lamb, Chickpeas, Potato, Dried Lime",False,Mild
+ZAF-THR-001,ITEM-401,Sangak Bread,Bread,25000,"Whole Wheat Flour, Sesame",True,None
+ZAF-THR-001,ITEM-402,Barbari Bread,Bread,23000,"Flour, Nigella Seeds",True,None
+ZAF-THR-001,ITEM-403,Lavash Bread,Bread,14000,"Flour, Water, Salt",True,None
+ZAF-THR-001,ITEM-501,Bastani Sonnati,Dessert,77000,"Saffron, Rosewater, Pistachio, Cream",True,None
+ZAF-THR-001,ITEM-502,Faloodeh Shirazi,Dessert,66000,"Frozen Vermicelli, Rosewater, Lime, Cherry Syrup",True,None
+ZAF-THR-001,ITEM-503,Sholeh Zard,Dessert,54000,"Rice, Saffron, Cinnamon, Rosewater",True,None
+ZAF-THR-001,ITEM-504,Zoolbia Bamieh,Dessert,58000,"Fried Batter, Saffron Syrup",True,None
+ZAF-THR-001,ITEM-601,Doogh,Beverage,37000,"Yogurt, Mint, Soda Water",True,None
+ZAF-THR-001,ITEM-602,Sharbat-e Sekanjebin,Beverage,39000,"Vinegar, Sugar, Mint, Cucumber",True,None
+ZAF-THR-001,ITEM-603,Persian Tea (Chai),Beverage,24000,"Black Tea, Cardamom, Saffron Rock Candy",True,None
+ZAF-THR-001,ITEM-604,Sharbat-e Ablimoo,Beverage,36000,"Lime Juice, Mint, Sugar",True,None
+ZAF-THR-002,ITEM-101,Mast-o Khiar,Starter,67000,"Yogurt, Cucumber, Mint, Dried Rose Petals",True,None
+ZAF-THR-002,ITEM-102,Kashke Bademjan,Starter,96000,"Eggplant, Whey (Kashk), Fried Onion, Mint",True,Mild
+ZAF-THR-002,ITEM-103,Mirza Ghasemi,Starter,93000,"Smoked Eggplant, Tomato, Garlic, Egg",True,Mild
+ZAF-THR-002,ITEM-104,Dolme Barg,Starter,113000,"Grape Leaves, Rice, Herbs, Ground Meat",False,Mild
+ZAF-THR-002,ITEM-105,Salad Shirazi,Starter,55000,"Cucumber, Tomato, Onion, Lime, Mint",True,None
+ZAF-THR-002,ITEM-201,Kuku Sabzi,Main Course,126000,"Herbs, Egg, Walnuts, Barberries",True,None
+ZAF-THR-002,ITEM-202,Adas Polo,Main Course,128000,"Rice, Lentils, Raisins, Dates, Fried Onion",True,Mild
+ZAF-THR-002,ITEM-203,Ash Reshteh,Main Course,106000,"Noodles, Herbs, Beans, Kashk",True,Mild
+ZAF-THR-002,ITEM-204,Sabzi Polo,Main Course,98000,"Herbed Basmati Rice, Dill, Parsley",True,None
+ZAF-THR-002,ITEM-205,Baghali Polo,Main Course,116000,"Rice, Fava Beans, Dill",True,None
+ZAF-THR-002,ITEM-301,Chelo Kabab Koobideh,Main Course,295000,"Ground Lamb & Beef Skewers, Saffron Rice, Grilled Tomato",False,Mild
+ZAF-THR-002,ITEM-302,Joojeh Kabab,Main Course,262000,"Saffron Marinated Chicken, Grilled Tomato, Rice",False,Mild
+ZAF-THR-002,ITEM-303,Ghormeh Sabzi,Main Course,250000,"Lamb, Herbs, Dried Lime, Kidney Beans",False,Medium
+ZAF-THR-002,ITEM-304,Fesenjan,Main Course,258000,"Chicken, Walnut, Pomegranate Molasses",False,Mild
+ZAF-THR-002,ITEM-305,Zereshk Polo ba Morgh,Main Course,224000,"Saffron Rice, Barberries, Roast Chicken",False,None
+ZAF-THR-002,ITEM-306,Tahchin Morgh,Main Course,215000,"Saffron Rice Cake, Chicken, Yogurt",False,None
+ZAF-THR-002,ITEM-307,Abgoosht (Dizi),Main Course,187000,"Lamb, Chickpeas, Potato, Dried Lime",False,Mild
+ZAF-THR-002,ITEM-401,Sangak Bread,Bread,24000,"Whole Wheat Flour, Sesame",True,None
+ZAF-THR-002,ITEM-402,Barbari Bread,Bread,21000,"Flour, Nigella Seeds",True,None
+ZAF-THR-002,ITEM-403,Lavash Bread,Bread,15000,"Flour, Water, Salt",True,None
+ZAF-THR-002,ITEM-501,Bastani Sonnati,Dessert,76000,"Saffron, Rosewater, Pistachio, Cream",True,None
+ZAF-THR-002,ITEM-502,Faloodeh Shirazi,Dessert,64000,"Frozen Vermicelli, Rosewater, Lime, Cherry Syrup",True,None
+ZAF-THR-002,ITEM-503,Sholeh Zard,Dessert,54000,"Rice, Saffron, Cinnamon, Rosewater",True,None
+ZAF-THR-002,ITEM-504,Zoolbia Bamieh,Dessert,58000,"Fried Batter, Saffron Syrup",True,None
+ZAF-THR-002,ITEM-601,Doogh,Beverage,34000,"Yogurt, Mint, Soda Water",True,None
+ZAF-THR-002,ITEM-602,Sharbat-e Sekanjebin,Beverage,42000,"Vinegar, Sugar, Mint, Cucumber",True,None
+ZAF-THR-002,ITEM-603,Persian Tea (Chai),Beverage,25000,"Black Tea, Cardamom, Saffron Rock Candy",True,None
+ZAF-THR-002,ITEM-604,Sharbat-e Ablimoo,Beverage,38000,"Lime Juice, Mint, Sugar",True,None
+ZAF-ISF-001,ITEM-101,Mast-o Khiar,Starter,63000,"Yogurt, Cucumber, Mint, Dried Rose Petals",True,None
+ZAF-ISF-001,ITEM-102,Kashke Bademjan,Starter,97000,"Eggplant, Whey (Kashk), Fried Onion, Mint",True,Mild
+ZAF-ISF-001,ITEM-103,Mirza Ghasemi,Starter,87000,"Smoked Eggplant, Tomato, Garlic, Egg",True,Mild
+ZAF-ISF-001,ITEM-104,Dolme Barg,Starter,109000,"Grape Leaves, Rice, Herbs, Ground Meat",False,Mild
+ZAF-ISF-001,ITEM-105,Salad Shirazi,Starter,58000,"Cucumber, Tomato, Onion, Lime, Mint",True,None
+ZAF-ISF-001,ITEM-201,Kuku Sabzi,Main Course,122000,"Herbs, Egg, Walnuts, Barberries",True,None
+ZAF-ISF-001,ITEM-202,Adas Polo,Main Course,131000,"Rice, Lentils, Raisins, Dates, Fried Onion",True,Mild
+ZAF-ISF-001,ITEM-203,Ash Reshteh,Main Course,107000,"Noodles, Herbs, Beans, Kashk",True,Mild
+ZAF-ISF-001,ITEM-204,Sabzi Polo,Main Course,98000,"Herbed Basmati Rice, Dill, Parsley",True,None
+ZAF-ISF-001,ITEM-205,Baghali Polo,Main Course,118000,"Rice, Fava Beans, Dill",True,None
+ZAF-ISF-001,ITEM-301,Chelo Kabab Koobideh,Main Course,277000,"Ground Lamb & Beef Skewers, Saffron Rice, Grilled Tomato",False,Mild
+ZAF-ISF-001,ITEM-302,Joojeh Kabab,Main Course,248000,"Saffron Marinated Chicken, Grilled Tomato, Rice",False,Mild
+ZAF-ISF-001,ITEM-303,Ghormeh Sabzi,Main Course,240000,"Lamb, Herbs, Dried Lime, Kidney Beans",False,Medium
+ZAF-ISF-001,ITEM-304,Fesenjan,Main Course,264000,"Chicken, Walnut, Pomegranate Molasses",False,Mild
+ZAF-ISF-001,ITEM-305,Zereshk Polo ba Morgh,Main Course,223000,"Saffron Rice, Barberries, Roast Chicken",False,None
+ZAF-ISF-001,ITEM-306,Tahchin Morgh,Main Course,230000,"Saffron Rice Cake, Chicken, Yogurt",False,None
+ZAF-ISF-001,ITEM-307,Abgoosht (Dizi),Main Course,202000,"Lamb, Chickpeas, Potato, Dried Lime",False,Mild
+ZAF-ISF-001,ITEM-401,Sangak Bread,Bread,25000,"Whole Wheat Flour, Sesame",True,None
+ZAF-ISF-001,ITEM-402,Barbari Bread,Bread,22000,"Flour, Nigella Seeds",True,None
+ZAF-ISF-001,ITEM-403,Lavash Bread,Bread,15000,"Flour, Water, Salt",True,None
+ZAF-ISF-001,ITEM-501,Bastani Sonnati,Dessert,78000,"Saffron, Rosewater, Pistachio, Cream",True,None
+ZAF-ISF-001,ITEM-502,Faloodeh Shirazi,Dessert,65000,"Frozen Vermicelli, Rosewater, Lime, Cherry Syrup",True,None
+ZAF-ISF-001,ITEM-503,Sholeh Zard,Dessert,54000,"Rice, Saffron, Cinnamon, Rosewater",True,None
+ZAF-ISF-001,ITEM-504,Zoolbia Bamieh,Dessert,58000,"Fried Batter, Saffron Syrup",True,None
+ZAF-ISF-001,ITEM-601,Doogh,Beverage,35000,"Yogurt, Mint, Soda Water",True,None
+ZAF-ISF-001,ITEM-602,Sharbat-e Sekanjebin,Beverage,39000,"Vinegar, Sugar, Mint, Cucumber",True,None
+ZAF-ISF-001,ITEM-603,Persian Tea (Chai),Beverage,25000,"Black Tea, Cardamom, Saffron Rock Candy",True,None
+ZAF-ISF-001,ITEM-604,Sharbat-e Ablimoo,Beverage,40000,"Lime Juice, Mint, Sugar",True,None
+ZAF-SHZ-001,ITEM-101,Mast-o Khiar,Starter,64000,"Yogurt, Cucumber, Mint, Dried Rose Petals",True,None
+ZAF-SHZ-001,ITEM-102,Kashke Bademjan,Starter,92000,"Eggplant, Whey (Kashk), Fried Onion, Mint",True,Mild
+ZAF-SHZ-001,ITEM-103,Mirza Ghasemi,Starter,94000,"Smoked Eggplant, Tomato, Garlic, Egg",True,Mild
+ZAF-SHZ-001,ITEM-104,Dolme Barg,Starter,110000,"Grape Leaves, Rice, Herbs, Ground Meat",False,Mild
+ZAF-SHZ-001,ITEM-105,Salad Shirazi,Starter,53000,"Cucumber, Tomato, Onion, Lime, Mint",True,None
+ZAF-SHZ-001,ITEM-201,Kuku Sabzi,Main Course,115000,"Herbs, Egg, Walnuts, Barberries",True,None
+ZAF-SHZ-001,ITEM-202,Adas Polo,Main Course,125000,"Rice, Lentils, Raisins, Dates, Fried Onion",True,Mild
+ZAF-SHZ-001,ITEM-203,Ash Reshteh,Main Course,106000,"Noodles, Herbs, Beans, Kashk",True,Mild
+ZAF-SHZ-001,ITEM-204,Sabzi Polo,Main Course,98000,"Herbed Basmati Rice, Dill, Parsley",True,None
+ZAF-SHZ-001,ITEM-205,Baghali Polo,Main Course,114000,"Rice, Fava Beans, Dill",True,None
+ZAF-SHZ-001,ITEM-301,Chelo Kabab Koobideh,Main Course,273000,"Ground Lamb & Beef Skewers, Saffron Rice, Grilled Tomato",False,Mild
+ZAF-SHZ-001,ITEM-302,Joojeh Kabab,Main Course,257000,"Saffron Marinated Chicken, Grilled Tomato, Rice",False,Mild
+ZAF-SHZ-001,ITEM-303,Ghormeh Sabzi,Main Course,257000,"Lamb, Herbs, Dried Lime, Kidney Beans",False,Medium
+ZAF-SHZ-001,ITEM-304,Fesenjan,Main Course,271000,"Chicken, Walnut, Pomegranate Molasses",False,Mild
+ZAF-SHZ-001,ITEM-305,Zereshk Polo ba Morgh,Main Course,241000,"Saffron Rice, Barberries, Roast Chicken",False,None
+ZAF-SHZ-001,ITEM-306,Tahchin Morgh,Main Course,228000,"Saffron Rice Cake, Chicken, Yogurt",False,None
+ZAF-SHZ-001,ITEM-307,Abgoosht (Dizi),Main Course,185000,"Lamb, Chickpeas, Potato, Dried Lime",False,Mild
+ZAF-SHZ-001,ITEM-401,Sangak Bread,Bread,26000,"Whole Wheat Flour, Sesame",True,None
+ZAF-SHZ-001,ITEM-402,Barbari Bread,Bread,22000,"Flour, Nigella Seeds",True,None
+ZAF-SHZ-001,ITEM-403,Lavash Bread,Bread,15000,"Flour, Water, Salt",True,None
+ZAF-SHZ-001,ITEM-501,Bastani Sonnati,Dessert,73000,"Saffron, Rosewater, Pistachio, Cream",True,None
+ZAF-SHZ-001,ITEM-502,Faloodeh Shirazi,Dessert,66000,"Frozen Vermicelli, Rosewater, Lime, Cherry Syrup",True,None
+ZAF-SHZ-001,ITEM-503,Sholeh Zard,Dessert,53000,"Rice, Saffron, Cinnamon, Rosewater",True,None
+ZAF-SHZ-001,ITEM-504,Zoolbia Bamieh,Dessert,60000,"Fried Batter, Saffron Syrup",True,None
+ZAF-SHZ-001,ITEM-601,Doogh,Beverage,35000,"Yogurt, Mint, Soda Water",True,None
+ZAF-SHZ-001,ITEM-602,Sharbat-e Sekanjebin,Beverage,42000,"Vinegar, Sugar, Mint, Cucumber",True,None
+ZAF-SHZ-001,ITEM-603,Persian Tea (Chai),Beverage,26000,"Black Tea, Cardamom, Saffron Rock Candy",True,None
+ZAF-SHZ-001,ITEM-604,Sharbat-e Ablimoo,Beverage,37000,"Lime Juice, Mint, Sugar",True,None
+ZAF-TBZ-001,ITEM-101,Mast-o Khiar,Starter,65000,"Yogurt, Cucumber, Mint, Dried Rose Petals",True,None
+ZAF-TBZ-001,ITEM-102,Kashke Bademjan,Starter,92000,"Eggplant, Whey (Kashk), Fried Onion, Mint",True,Mild
+ZAF-TBZ-001,ITEM-103,Mirza Ghasemi,Starter,94000,"Smoked Eggplant, Tomato, Garlic, Egg",True,Mild
+ZAF-TBZ-001,ITEM-104,Dolme Barg,Starter,114000,"Grape Leaves, Rice, Herbs, Ground Meat",False,Mild
+ZAF-TBZ-001,ITEM-105,Salad Shirazi,Starter,54000,"Cucumber, Tomato, Onion, Lime, Mint",True,None
+ZAF-TBZ-001,ITEM-201,Kuku Sabzi,Main Course,122000,"Herbs, Egg, Walnuts, Barberries",True,None
+ZAF-TBZ-001,ITEM-202,Adas Polo,Main Course,131000,"Rice, Lentils, Raisins, Dates, Fried Onion",True,Mild
+ZAF-TBZ-001,ITEM-203,Ash Reshteh,Main Course,101000,"Noodles, Herbs, Beans, Kashk",True,Mild
+ZAF-TBZ-001,ITEM-204,Sabzi Polo,Main Course,97000,"Herbed Basmati Rice, Dill, Parsley",True,None
+ZAF-TBZ-001,ITEM-205,Baghali Polo,Main Course,115000,"Rice, Fava Beans, Dill",True,None
+ZAF-TBZ-001,ITEM-301,Chelo Kabab Koobideh,Main Course,293000,"Ground Lamb & Beef Skewers, Saffron Rice, Grilled Tomato",False,Mild
+ZAF-TBZ-001,ITEM-302,Joojeh Kabab,Main Course,261000,"Saffron Marinated Chicken, Grilled Tomato, Rice",False,Mild
+ZAF-TBZ-001,ITEM-303,Ghormeh Sabzi,Main Course,233000,"Lamb, Herbs, Dried Lime, Kidney Beans",False,Medium
+ZAF-TBZ-001,ITEM-304,Fesenjan,Main Course,265000,"Chicken, Walnut, Pomegranate Molasses",False,Mild
+ZAF-TBZ-001,ITEM-305,Zereshk Polo ba Morgh,Main Course,219000,"Saffron Rice, Barberries, Roast Chicken",False,None
+ZAF-TBZ-001,ITEM-306,Tahchin Morgh,Main Course,229000,"Saffron Rice Cake, Chicken, Yogurt",False,None
+ZAF-TBZ-001,ITEM-307,Abgoosht (Dizi),Main Course,202000,"Lamb, Chickpeas, Potato, Dried Lime",False,Mild
+ZAF-TBZ-001,ITEM-401,Sangak Bread,Bread,26000,"Whole Wheat Flour, Sesame",True,None
+ZAF-TBZ-001,ITEM-402,Barbari Bread,Bread,22000,"Flour, Nigella Seeds",True,None
+ZAF-TBZ-001,ITEM-403,Lavash Bread,Bread,14000,"Flour, Water, Salt",True,None
+ZAF-TBZ-001,ITEM-501,Bastani Sonnati,Dessert,78000,"Saffron, Rosewater, Pistachio, Cream",True,None
+ZAF-TBZ-001,ITEM-502,Faloodeh Shirazi,Dessert,68000,"Frozen Vermicelli, Rosewater, Lime, Cherry Syrup",True,None
+ZAF-TBZ-001,ITEM-503,Sholeh Zard,Dessert,53000,"Rice, Saffron, Cinnamon, Rosewater",True,None
+ZAF-TBZ-001,ITEM-504,Zoolbia Bamieh,Dessert,60000,"Fried Batter, Saffron Syrup",True,None
+ZAF-TBZ-001,ITEM-601,Doogh,Beverage,33000,"Yogurt, Mint, Soda Water",True,None
+ZAF-TBZ-001,ITEM-602,Sharbat-e Sekanjebin,Beverage,41000,"Vinegar, Sugar, Mint, Cucumber",True,None
+ZAF-TBZ-001,ITEM-603,Persian Tea (Chai),Beverage,26000,"Black Tea, Cardamom, Saffron Rock Candy",True,None
+ZAF-TBZ-001,ITEM-604,Sharbat-e Ablimoo,Beverage,37000,"Lime Juice, Mint, Sugar",True,None
+ZAF-MSH-001,ITEM-101,Mast-o Khiar,Starter,65000,"Yogurt, Cucumber, Mint, Dried Rose Petals",True,None
+ZAF-MSH-001,ITEM-102,Kashke Bademjan,Starter,95000,"Eggplant, Whey (Kashk), Fried Onion, Mint",True,Mild
+ZAF-MSH-001,ITEM-103,Mirza Ghasemi,Starter,88000,"Smoked Eggplant, Tomato, Garlic, Egg",True,Mild
+ZAF-MSH-001,ITEM-104,Dolme Barg,Starter,114000,"Grape Leaves, Rice, Herbs, Ground Meat",False,Mild
+ZAF-MSH-001,ITEM-105,Salad Shirazi,Starter,55000,"Cucumber, Tomato, Onion, Lime, Mint",True,None
+ZAF-MSH-001,ITEM-201,Kuku Sabzi,Main Course,117000,"Herbs, Egg, Walnuts, Barberries",True,None
+ZAF-MSH-001,ITEM-202,Adas Polo,Main Course,131000,"Rice, Lentils, Raisins, Dates, Fried Onion",True,Mild
+ZAF-MSH-001,ITEM-203,Ash Reshteh,Main Course,107000,"Noodles, Herbs, Beans, Kashk",True,Mild
+ZAF-MSH-001,ITEM-204,Sabzi Polo,Main Course,92000,"Herbed Basmati Rice, Dill, Parsley",True,None
+ZAF-MSH-001,ITEM-205,Baghali Polo,Main Course,113000,"Rice, Fava Beans, Dill",True,None
+ZAF-MSH-001,ITEM-301,Chelo Kabab Koobideh,Main Course,299000,"Ground Lamb & Beef Skewers, Saffron Rice, Grilled Tomato",False,Mild
+ZAF-MSH-001,ITEM-302,Joojeh Kabab,Main Course,264000,"Saffron Marinated Chicken, Grilled Tomato, Rice",False,Mild
+ZAF-MSH-001,ITEM-303,Ghormeh Sabzi,Main Course,243000,"Lamb, Herbs, Dried Lime, Kidney Beans",False,Medium
+ZAF-MSH-001,ITEM-304,Fesenjan,Main Course,270000,"Chicken, Walnut, Pomegranate Molasses",False,Mild
+ZAF-MSH-001,ITEM-305,Zereshk Polo ba Morgh,Main Course,221000,"Saffron Rice, Barberries, Roast Chicken",False,None
+ZAF-MSH-001,ITEM-306,Tahchin Morgh,Main Course,214000,"Saffron Rice Cake, Chicken, Yogurt",False,None
+ZAF-MSH-001,ITEM-307,Abgoosht (Dizi),Main Course,192000,"Lamb, Chickpeas, Potato, Dried Lime",False,Mild
+ZAF-MSH-001,ITEM-401,Sangak Bread,Bread,25000,"Whole Wheat Flour, Sesame",True,None
+ZAF-MSH-001,ITEM-402,Barbari Bread,Bread,21000,"Flour, Nigella Seeds",True,None
+ZAF-MSH-001,ITEM-403,Lavash Bread,Bread,15000,"Flour, Water, Salt",True,None
+ZAF-MSH-001,ITEM-501,Bastani Sonnati,Dessert,72000,"Saffron, Rosewater, Pistachio, Cream",True,None
+ZAF-MSH-001,ITEM-502,Faloodeh Shirazi,Dessert,66000,"Frozen Vermicelli, Rosewater, Lime, Cherry Syrup",True,None
+ZAF-MSH-001,ITEM-503,Sholeh Zard,Dessert,54000,"Rice, Saffron, Cinnamon, Rosewater",True,None
+ZAF-MSH-001,ITEM-504,Zoolbia Bamieh,Dessert,62000,"Fried Batter, Saffron Syrup",True,None
+ZAF-MSH-001,ITEM-601,Doogh,Beverage,36000,"Yogurt, Mint, Soda Water",True,None
+ZAF-MSH-001,ITEM-602,Sharbat-e Sekanjebin,Beverage,38000,"Vinegar, Sugar, Mint, Cucumber",True,None
+ZAF-MSH-001,ITEM-603,Persian Tea (Chai),Beverage,24000,"Black Tea, Cardamom, Saffron Rock Candy",True,None
+ZAF-MSH-001,ITEM-604,Sharbat-e Ablimoo,Beverage,39000,"Lime Juice, Mint, Sugar",True,None

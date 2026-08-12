@@ -1,0 +1,7 @@
+restaurant_id,name,city,province,country,address,opening_date,phone
+ZAF-THR-001,Zaferan Sofreh Valiasr,Tehran,Tehran,Iran,"Valiasr Street, Tehran",2023-01-15,+98-21-8812-4567
+ZAF-THR-002,Zaferan Sofreh Tajrish,Tehran,Tehran,Iran,"Tajrish Square, Tehran",2023-06-20,+98-21-2274-5678
+ZAF-ISF-001,Zaferan Sofreh Naqsh-e Jahan,Isfahan,Isfahan,Iran,"Naqsh-e Jahan Square, Isfahan",2023-03-10,+98-31-3222-6789
+ZAF-SHZ-001,Zaferan Sofreh Zandiyeh,Shiraz,Fars,Iran,"Zand Boulevard, Shiraz",2023-09-05,+98-71-3233-7890
+ZAF-TBZ-001,Zaferan Sofreh El-Goli,Tabriz,East Azerbaijan,Iran,"El-Goli Park Road, Tabriz",2024-02-14,+98-41-3355-8901
+ZAF-MSH-001,Zaferan Sofreh Vakilabad,Mashhad,Razavi Khorasan,Iran,"Vakilabad Boulevard, Mashhad",2024-05-01,+98-51-3811-9012
