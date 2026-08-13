@@ -38,8 +38,8 @@ pip install -r requirements.txt
 # Batch leg: reference data -> historical orders -> reviews
 python run_pipeline.py --orders 8000 --months-back 6 --review-rate 0.35
 
-# Streaming leg (no Azure credentials needed):
-python -m streaming.eventhub_producer --dry-run --interval 2
+# Streaming leg (aiven.io)
+python -m streaming.aiven_kafka_producer
 
 # Streaming leg (real Event Hub — set EVENTHUB_CONNECTION_STRING /
 # EVENTHUB_NAME in a .env file first):

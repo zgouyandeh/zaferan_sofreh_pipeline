@@ -51,8 +51,8 @@ from pyspark.sql.types import (
 # Connection details — never hardcode credentials in the script itself.
 # ==============================================================================
 AIVEN_BOOTSTRAP = "kafka-26f2fbb0-mrs-224b.e.aivencloud.com:17355"  
-AIVEN_USER = dbutils.secrets.get(scope="aiven", key="kafka-username")
-AIVEN_PASSWORD = dbutils.secrets.get(scope="aiven", key="kafka-password")
+AIVEN_USER = spark.conf.get("aiven.username")
+AIVEN_PASSWORD = spark.conf.get("aiven.password")
 TOPIC_NAME = "restaurant-orders"
 CA_CERT_PATH = "/Volumes/zaferan_sofreh/bronze/kafka_certs/ca.pem"
 

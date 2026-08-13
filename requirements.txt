@@ -2,4 +2,7 @@ pandas>=2.0
 pydantic>=2.0
 python-dotenv>=1.0
 azure-eventhub>=5.11
-kafka-python>=2.0   # only needed for streaming/aiven_kafka_producer.py
+kafka-python>=2.0    
+sqlalchemy
+psycopg2-binary
+python-dotenv
