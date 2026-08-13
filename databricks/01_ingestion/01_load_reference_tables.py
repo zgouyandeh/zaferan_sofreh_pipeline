@@ -12,7 +12,7 @@ Run this after:
      volume, e.g.:
          databricks fs cp -r data/ dbfs:/Volumes/zaferan_sofreh/bronze/landing/
 """
-from pyspark.sql.functions import current_timestamp, input_file_name
+from pyspark.sql.functions import current_timestamp, col
 
 CATALOG = "zaferan_sofreh"
 SCHEMA = "bronze"
@@ -33,7 +33,7 @@ for filename, table_name in SOURCES:
         .option("inferSchema", "true")
         .csv(f"{LANDING_PATH}/{filename}")
         .withColumn("_ingested_at", current_timestamp())
-        .withColumn("_source_file", input_file_name())
+        .withColumn("_source_file", col("_metadata.file_path"))
     )
 
     full_table_name = f"{CATALOG}.{SCHEMA}.{table_name}"
