@@ -39,8 +39,7 @@ pip install -r requirements.txt
 python run_pipeline.py --orders 8000 --months-back 6 --review-rate 0.35
 
 # Streaming leg (aiven.io)
-python -m streaming.aiven_kafka_producer
-
+python -m streaming.01_aiven_kafka_producer
 # Streaming leg (real Event Hub — set EVENTHUB_CONNECTION_STRING /
 # EVENTHUB_NAME in a .env file first):
 python -m streaming.eventhub_producer --interval 3 --batch-size 5

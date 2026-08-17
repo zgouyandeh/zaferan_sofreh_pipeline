@@ -1,54 +1,48 @@
-import os
-from urllib.parse import quote_plus
-import pandas as pd
-from dotenv import load_dotenv
-from sqlalchemy import create_engine
+"""
+databricks/01_ingestion/load_reference_tables_from_aiven.py
+----------------------------------------------------
+Ingests batch reference tables directly from Aiven PostgreSQL into
+bronze Delta tables using PySpark JDBC. Credentials are retrieved
+from a Databricks secret scope (aiven-postgres), never hardcoded
+or stored in cluster-visible plaintext config.
+"""
 
-# Load environment variables from .env file
-load_dotenv()
+CATALOG = "zaferan_sofreh"
+SCHEMA = "bronze"
+SECRET_SCOPE = "aiven-postgres"
 
-# Retrieve connection details and paths from environment variables
-HOST = os.getenv("AIVEN_PG_HOST")
-PORT = os.getenv("AIVEN_PG_PORT", "17342")
-DB_NAME = os.getenv("AIVEN_PG_DB", "defaultdb")
-USER = os.getenv("AIVEN_PG_USER", "avnadmin")
-PASSWORD = os.getenv("AIVEN_PG_PASSWORD")
-DATA_DIR = os.getenv("DATA_DIR", "./data")
+POSTGRES_HOST     = dbutils.secrets.get(scope=SECRET_SCOPE, key="host")
+POSTGRES_PORT     = dbutils.secrets.get(scope=SECRET_SCOPE, key="port")
+POSTGRES_DB       = dbutils.secrets.get(scope=SECRET_SCOPE, key="db")
+POSTGRES_USER     = dbutils.secrets.get(scope=SECRET_SCOPE, key="user")
+POSTGRES_PASSWORD = dbutils.secrets.get(scope=SECRET_SCOPE, key="password")
 
-# Validate critical credentials
-if not HOST or not PASSWORD:
-    raise ValueError("Missing required environment variables (AIVEN_PG_HOST or AIVEN_PG_PASSWORD) in .env file.")
+JDBC_URL = f"jdbc:postgresql://{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}?sslmode=require"
 
-# URL-encode password to handle special characters safely (like hyphens, underscores, etc.)
-encoded_password = quote_plus(PASSWORD)
+SOURCES = [
+    ("restaurants", "restaurants_raw"),
+    ("customers", "customers_raw"),
+    ("menu_items", "menu_items_raw"),
+    ("historical_orders", "historical_orders_raw"),
+    ("customer_reviews", "customer_reviews_raw"),
+]
 
-# Construct SSL Connection String
-# Note: Use 'postgresql://' instead of 'postgres://' for compatibility with SQLAlchemy 1.4+
-DATABASE_URL = f"postgresql://{USER}:{encoded_password}@{HOST}:{PORT}/{DB_NAME}?sslmode=require"
+for pg_table, delta_table in SOURCES:
+    print(f"Reading '{pg_table}' from Aiven PostgreSQL...")
 
-# Create Database Engine
-engine = create_engine(DATABASE_URL)
+    df = (
+        spark.read.format("jdbc")
+        .option("url", JDBC_URL)
+        .option("dbtable", pg_table)
+        .option("user", POSTGRES_USER)
+        .option("password", POSTGRES_PASSWORD)
+        .option("driver", "org.postgresql.Driver")
+        .load()
+    )
 
-# Map local CSV files to PostgreSQL table names
-FILES_TO_TABLES = {
-    "restaurants.csv": "restaurants",
-    "customers.csv": "customers",
-    "menu_items.csv": "menu_items",
-    "historical_orders.csv": "historical_orders",
-    "customer_reviews.csv": "customer_reviews",
-}
+    full_table_name = f"{CATALOG}.{SCHEMA}.{delta_table}"
+    df.write.format("delta").mode("overwrite").saveAsTable(full_table_name)
 
-for csv_file, table_name in FILES_TO_TABLES.items():
-    file_path = os.path.join(DATA_DIR, csv_file)
-    
-    if os.path.exists(file_path):
-        print(f"Reading {csv_file}...")
-        df = pd.read_csv(file_path)
-        
-        # Upload to Aiven PostgreSQL (overwrites if table already exists)
-        df.to_sql(name=table_name, con=engine, if_exists="replace", index=False)
-        print(f" Successfully loaded {len(df)} rows into table '{table_name}'")
-    else:
-        print(f"⚠️ File not found: {file_path}")
+    print(f"Successfully loaded {df.count()} rows -> {full_table_name}")
 
-print("\n All reference tables have been uploaded to Aiven PostgreSQL!")
+print("\nAll reference tables ingested successfully into Databricks Bronze Layer!")
