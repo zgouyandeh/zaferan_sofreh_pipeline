@@ -1,9 +1,10 @@
 """
 generators/reviews.py
 -----------------------
-Samples a subset of historical orders and generates a customer review for
-each — simulating a downstream customer-engagement source system that
-would be joined against orders in the silver/gold layers.
+This module generates synthetic customer reviews for the Zaferan Sofreh restaurant analytics pipeline.
+It creates reviews for a subset of historical orders, ensuring that each review adheres to the defined
+Pydantic schema for data integrity. The generated reviews are written to a CSV file for use in the bronze 
+layer of the pipeline.
 """
 from __future__ import annotations
 

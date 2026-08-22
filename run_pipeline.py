@@ -1,11 +1,9 @@
 """
 run_pipeline.py
 -----------------
-Single entrypoint for the batch leg of the pipeline: reference data ->
-historical orders -> reviews. Run this instead of invoking each script
-by hand; it enforces the correct dependency order and fails fast with a
-clear error if an upstream step didn't produce its output file.
-
+This script generates synthetic data for the Zaferan Sofreh restaurant analytics pipeline.
+It creates reference data (restaurants, menu items, customers), historical orders, and customer reviews,
+and writes the output to the specified data directory.
 Usage:
     python run_pipeline.py
     python run_pipeline.py --orders 20000 --months-back 12 --review-rate 0.2
@@ -14,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 
+import config
 from config import CONFIG, PipelineConfig
 from logging_setup import get_logger
 
@@ -21,6 +20,8 @@ logger = get_logger(__name__)
 
 
 def main(cfg: PipelineConfig) -> None:
+    # Update global config dynamically so child generators inherit CLI parameters
+    config.CONFIG = cfg
     cfg.ensure_dirs()
 
     logger.info("=== Step 1/3: reference data (restaurants, menu, customers) ===")
@@ -29,7 +30,10 @@ def main(cfg: PipelineConfig) -> None:
 
     logger.info("=== Step 2/3: historical orders ===")
     from generators.historical_orders import generate_historical_orders
-    generate_historical_orders(num_orders=cfg.n_historical_orders, months_back=cfg.historical_months_back)
+    generate_historical_orders(
+        num_orders=cfg.n_historical_orders, 
+        months_back=cfg.historical_months_back
+    )
 
     logger.info("=== Step 3/3: customer reviews ===")
     from generators.reviews import generate_customer_reviews

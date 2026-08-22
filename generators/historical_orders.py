@@ -1,14 +1,10 @@
 """
 generators/historical_orders.py
 ---------------------------------
-Generates a batch of historical, already-completed orders — this
-simulates a one-time backfill / historical load from the OLTP source
-system, as opposed to the live stream produced by
-streaming/eventhub_producer.py.
-
-Every record is validated against schemas.Order before being written,
-so malformed rows are caught at generation time rather than silently
-flowing downstream.
+This module generates synthetic historical order data for the Zaferan Sofreh restaurant analytics pipeline.
+It creates a specified number of orders over a given time range, ensuring that each order adheres to the defined 
+Pydantic schema for data integrity. The generated orders are written to a CSV file for use in the bronze layer of 
+the pipeline.
 """
 from __future__ import annotations
 
@@ -29,7 +25,7 @@ random.seed(CONFIG.random_seed)
 
 ORDER_TYPES = ["dine_in", "takeaway", "delivery"]
 PAYMENT_METHODS = ["cash", "card", "wallet"]
-ORDER_STATUSES = ["delivered", "completed"]  # terminal states only for historical data
+ORDER_STATUSES = ["delivered", "completed"]
 
 
 def _load_reference_data():
@@ -45,9 +41,63 @@ def _load_reference_data():
     return restaurants, customers, menu_by_restaurant
 
 
+def _get_random_valid_timestamp(start_date: datetime, end_date: datetime) -> datetime:
+    """Generates timestamps with Persian restaurant seasonality and strict opening hours."""
+    while True:
+        days_offset = random.randint(0, (end_date - start_date).days)
+        candidate_date = start_date + timedelta(days=days_offset)
+        weekday = candidate_date.weekday()  # Monday=0, Thursday=3, Friday=4, Sunday=6
+
+        # Assign probability weight based on weekly peak days
+        if weekday == 4:  # Friday (Peak day)
+            day_weight = 0.95
+        elif weekday == 3:  # Thursday (High peak for dinner)
+            day_weight = 0.75
+        else:  # Regular days
+            day_weight = 0.40
+
+        if random.random() > day_weight:
+            continue
+
+        # Select meal slot based on operating hours
+        slot = random.choices(
+            population=["brunch", "lunch", "dinner"],
+            weights=[0.15, 0.45, 0.40] if weekday == 4 else [0.10, 0.40, 0.50]
+        )[0]
+
+        if slot == "brunch":
+            hour = 10
+            minute = random.randint(0, 59)
+        elif slot == "lunch":
+            hour = random.randint(12, 15)
+            minute = random.randint(0, 59) if hour < 15 else random.randint(0, 30)  # Ends at 15:30 (4:30 PM = 16:30)
+        else:  # dinner
+            hour = random.randint(19, 21)
+            minute = random.randint(0, 59)
+
+        # Enforce Thursday evening bias for dinner
+        if weekday == 3 and slot != "dinner" and random.random() < 0.4:
+            continue
+
+        return candidate_date.replace(hour=hour, minute=minute, second=random.randint(0, 59))
+
+
+def _filter_menu_by_slot(menu_items: list, order_time: datetime) -> list:
+    hour = order_time.hour
+    if hour == 10:
+        slot_items = [i for i in menu_items if i["category"] in ["Brunch", "Beverage", "Bread"]]
+    elif 12 <= hour < 16:
+        slot_items = [i for i in menu_items if i["category"] in ["Starter", "Main Course", "Beverage", "Bread", "Dessert"]]
+    else:  # Dinner (19 to 22)
+        slot_items = [i for i in menu_items if i["category"] in ["Starter", "Main Course", "Beverage", "Bread", "Dessert"]]
+    
+    return slot_items if slot_items else menu_items
+
+
 def _build_order_payload(order_date: datetime, restaurant_id: str, customer_id: str, menu_items: list) -> dict:
-    num_items = random.randint(1, min(5, len(menu_items)))
-    selected_items = random.sample(menu_items, num_items)
+    available_items = _filter_menu_by_slot(menu_items, order_date)
+    num_items = random.randint(1, min(5, len(available_items)))
+    selected_items = random.sample(available_items, num_items)
 
     items = []
     total_amount = 0.0
@@ -100,14 +150,7 @@ def generate_historical_orders(
     rejected = 0
 
     for i in range(num_orders):
-        days_offset = random.randint(0, (end_date - start_date).days)
-        order_date = start_date + timedelta(days=days_offset)
-        order_date = order_date.replace(
-            hour=random.randint(10, 22),
-            minute=random.randint(0, 59),
-            second=random.randint(0, 59),
-        )
-
+        order_date = _get_random_valid_timestamp(start_date, end_date)
         restaurant_id = random.choice(restaurants)
         customer_id = random.choice(customers)
         menu_items = menu_by_restaurant[restaurant_id]
@@ -128,7 +171,7 @@ def generate_historical_orders(
                 "restaurant_id": validated.restaurant_id,
                 "customer_id": validated.customer_id,
                 "order_type": validated.order_type.value,
-                "items": json.dumps(payload["items"]),  # kept as JSON string for the flat CSV sink
+                "items": json.dumps(payload["items"]),
                 "total_amount": validated.total_amount,
                 "payment_method": validated.payment_method.value,
                 "order_status": validated.order_status.value,

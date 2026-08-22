@@ -1,0 +1,54 @@
+# Databricks Asset Bundle configuration for the Zaferan Sofreh
+# restaurant analytics platform.
+#
+# Deploy with:
+#   databricks bundle validate -t dev
+#   databricks bundle deploy   -t dev
+bundle:
+  name: zaferan_sofreh
+
+include:
+  - resources/*.yml
+
+variables:
+  catalog:
+    description: >-
+      Unity Catalog catalog name for this project. Aspirational for now --
+      see the NOTE above; scripts do not yet read this variable.
+    default: zaferan_sofreh
+  aiven_kafka_secret_scope:
+    description: Databricks secret scope holding Aiven Kafka SASL credentials
+    default: aiven-kafka
+  aiven_postgres_secret_scope:
+    description: Databricks secret scope holding Aiven PostgreSQL credentials
+    default: aiven-postgres
+  forecast_job_node_type_id:
+    description: >-
+      Cluster node type for the per-restaurant ARIMAX forecasting job
+      (resources/zaferan_sofreh_forecast_job.yml). Pick one available in
+      your workspace's cloud, e.g. i3.xlarge (AWS), Standard_DS3_v2
+      (Azure), or n2-highmem-4 (GCP).
+    default: <fill-in-a-node-type-for-your-cloud>
+  forecast_job_schedule_cron:
+    description: Quartz cron expression for the forecasting job schedule
+    default: "0 0 4 * * ?"  # 04:00 daily -- after the medallion pipeline's own refresh
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: https://<your-workspace-instance>.cloud.databricks.com
+      root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/dev
+    variables:
+      catalog: zaferan_sofreh
+
+  prod:
+    mode: production
+    workspace:
+      host: https://<your-workspace-instance>.cloud.databricks.com
+      root_path: /Shared/.bundle/${bundle.name}/prod
+    run_as:
+      service_principal_name: <your-service-principal-application-id>
+    variables:
+      catalog: zaferan_sofreh

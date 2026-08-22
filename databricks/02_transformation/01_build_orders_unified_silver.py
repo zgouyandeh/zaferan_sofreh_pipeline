@@ -1,3 +1,13 @@
+
+"""
+databricks/02_transformation/01_build_orders_unified_silver.py
+------------------------------------------------------
+This code reads the historical orders and the streaming orders from the bronze layer, 
+applies conformance and deduplication logic, and writes the result to a silver table. 
+The pipeline engine manages checkpointing and incremental writes automatically —
+no manual .option("checkpointLocation", ...) needed, unlike a plain Structured Streaming job.
+"""
+
 import dlt
 from pyspark.sql.functions import col, lit, to_timestamp
 

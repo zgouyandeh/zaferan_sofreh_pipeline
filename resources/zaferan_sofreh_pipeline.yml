@@ -1,0 +1,67 @@
+resources:
+  pipelines:
+    zaferan_sofreh_medallion_pipeline:
+      name: zaferan_sofreh_medallion_pipeline
+      catalog: ${var.catalog}
+      photon: true
+      continuous: true
+      serverless: true
+
+      configuration:
+        aiven.username: "{{secrets/${var.aiven_kafka_secret_scope}/username}}"
+        aiven.password: "{{secrets/${var.aiven_kafka_secret_scope}/password}}"
+
+      libraries:
+        # ---- Bronze: ingestion ----
+        - notebook:
+            path: ../databricks/01_ingestion/01_load_reference_tables_from_aiven.py
+        - notebook:
+            path: ../databricks/01_ingestion/02_stream_orders_from_aiven.py
+
+        # ---- Silver: transformation ----
+        - notebook:
+            path: ../databricks/02_transformation/01_build_orders_unified_silver.py
+        - notebook:
+            path: ../databricks/02_transformation/02_fact_orders.py
+        - notebook:
+            path: ../databricks/02_transformation/03_fact_orders_item.py
+        - notebook:
+            path: ../databricks/02_transformation/04_fact_review.sql
+        - notebook:
+            path: ../databricks/02_transformation/05_dim_restaurant.py
+        - notebook:
+            path: ../databricks/02_transformation/06_dim_customer.py
+        - notebook:
+            path: ../databricks/02_transformation/07_dim_menu_item.py
+
+        # ---- Gold: marts ----
+        - notebook:
+            path: ../databricks/03_marts/01_daily_sales_summery.py
+        - notebook:
+            path: ../databricks/03_marts/02_daily_restaurant_reviews.py
+        - notebook:
+            path: ../databricks/03_marts/03_customer_restaurant_preference.py
+        - notebook:
+            path: ../databricks/03_marts/04_customer_360.py
+        - notebook:
+            path: ../databricks/03_marts/05_restaurant_360.py
+        - notebook:
+            path: ../databricks/03_marts/06_daily_item_popularity.py
+        - notebook:
+            path: ../databricks/03_marts/07_daily_restaurant_performance.py
+
+  jobs:
+    zaferan_sofreh_reference_load_job:
+      name: zaferan_sofreh_reference_load_job
+      description: >
+        Loads reference/historical CSVs into Aiven PostgreSQL, then triggers
+        the Lakeflow pipeline update. Run on a schedule for environments where
+        the pipeline is not left in continuous mode.
+      schedule:
+        quartz_cron_expression: "0 0 3 * * ?" # 03:00 daily
+        timezone_id: UTC
+        pause_status: PAUSED 
+      tasks:
+        - task_key: refresh_medallion_pipeline
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.zaferan_sofreh_medallion_pipeline.id}

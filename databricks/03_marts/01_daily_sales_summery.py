@@ -1,44 +1,32 @@
+"""
+databricks/03_marts/01_daily_sales_summery.py
+------------------------------------------------------  
+This code reads the silver fact_orders table, applies aggregations and quality checks, 
+and writes the result to a daily_sales_summary materialized view.
+It uses HyperLogLog (HLL) sketches for approximate distinct counting of customers,
+which is useful for large datasets where exact counts are not necessary and can save memory and computation time.
+"""
 from pyspark import pipelines as dp
-from pyspark.sql.functions import *
-from pyspark.sql.types import *
-from datetime import datetime
+from pyspark.sql import functions as F
 
 @dp.materialized_view(
     name="daily_sales_summary",   
     partition_cols=["order_date"],
     table_properties={"quality": "gold"},
-    comment="Gold layer aggregates with date-based overwrites",
+    comment="Gold daily aggregations with HyperLogLog customer sketches",
 )
-def daily_sales_summery():
-    df_daily_sales = (
-        spark.read.table("zaferan_sofreh.silver.fact_orders")
+def daily_sales_summary():
+    return (
+        dp.read("zaferan_sofreh.silver.fact_orders")  
+        .filter(F.col("order_status").isin("completed", "delivered"))
         .groupBy("order_date")
         .agg(
-            countDistinct("order_id").alias("total_orders"),
-            sum("total_amount").cast("decimal(12,2)").alias("total_revenue"),
-            avg("total_amount").cast("decimal(10,2)").alias("avg_order_value"),
-            countDistinct("customer_id").alias("unique_customers"),
-            countDistinct("restaurant_id").alias("unique_restaurants"),
-            countDistinct(
-                when(col("order_type") == "dine_in", col("order_id")).otherwise(None)
-            ).alias("dine_in_order"),
-            countDistinct(
-                when(col("order_type") == "takeaway", col("order_id")).otherwise(None)
-            ).alias("takeaway_order"),
-            countDistinct(
-                when(col("order_type") == "delivery", col("order_id")).otherwise(None)
-            ).alias("delivery_order"),
-        )
-        .select(
-            "order_date",
-            "total_orders",
-            "total_revenue",
-            "avg_order_value",
-            "unique_customers",
-            "unique_restaurants",
-            "dine_in_order",
-            "takeaway_order",
-            "delivery_order",
+            F.count("order_id").alias("total_orders"),
+            F.sum("total_amount").cast("decimal(12,2)").alias("total_revenue"),
+            F.expr("hll_sketch_agg(customer_id)").alias("customer_hll_sketch"),
+            F.countDistinct("restaurant_id").alias("unique_restaurants"),
+            F.count(F.when(F.col("order_type") == "dine_in", F.col("order_id"))).alias("dine_in_orders"),
+            F.count(F.when(F.col("order_type") == "takeaway", F.col("order_id"))).alias("takeaway_orders"),
+            F.count(F.when(F.col("order_type") == "delivery", F.col("order_id"))).alias("delivery_orders"),
         )
     )
-    return df_daily_sales

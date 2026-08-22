@@ -1,45 +1,17 @@
 """
-databricks/01_ingestion/stream_orders_from_aiven.py
+databricks/01_ingestion/02_stream_orders_from_aiven.py
 ------------------------------------------------------
-Lakeflow Declarative Pipeline: reads the restaurant-order stream from
+This code reads the restaurant-order stream from
 Aiven Kafka and materializes a bronze streaming table. The pipeline
-engine manages checkpointing and incremental writes automatically —
-no manual .option("checkpointLocation", ...) needed, unlike a plain
-Structured Streaming job.
+engine manages checkpointing and incremental writes automatically.
 
-Design notes (see project README for the fuller discussion):
-  * `items` is intentionally kept as StringType here, not parsed into
-    ArrayType(order_item_schema). Bronze stays schema-flexible; the
-    nested structure gets parsed and validated in silver, where a
-    breaking upstream change won't fail ingestion. `order_item_schema`
-    is defined here so silver can import and reuse it.
-  * `raw_json_payload` is preserved verbatim alongside the parsed
-    columns. If from_json() can't parse a record, the parsed columns
-    resolve to NULL, but the original bytes are never lost — you can
-    always replay/reprocess from bronze.
-  * `ingested_at` records when Databricks processed the record,
-    separate from `kafka_timestamp` (when Aiven received it) — useful
-    for diagnosing pipeline lag.
-  * De-duplication (Kafka is at-least-once, so retries can produce
-    duplicate order_ids) is deliberately NOT handled here. Bronze is
-    append-only and expected to contain duplicates; dedupe on
-    `order_id` when building the silver table instead.
-
-Prerequisites:
-  1. Run databricks/00_setup/create_catalog_and_schemas.sql once.
-  2. A Databricks secret scope holding the Aiven credentials:
-         databricks secrets create-scope aiven
-         databricks secrets put-secret aiven kafka-username
-         databricks secrets put-secret aiven kafka-password
-  3. The Aiven CA certificate (ca.pem, from the Aiven console) uploaded
-     to /Volumes/zaferan_sofreh/bronze/kafka_certs/ca.pem
-  4. streaming/aiven_kafka_producer.py running somewhere and publishing
-     to the same AIVEN_TOPIC this reads from.
+Credentials are retrieved securely using Databricks Secrets (dbutils.secrets.get).
+The SSL certificate is stored at (/Volumes/zaferan_sofreh/bronze/kafka_certs/ca.pem).
 """
-from pyspark import pipelines as dp
+
+import dlt
 from pyspark.sql.functions import col, current_timestamp, from_json
 from pyspark.sql.types import (
-    ArrayType,
     DoubleType,
     IntegerType,
     StringType,
@@ -48,35 +20,25 @@ from pyspark.sql.types import (
 )
 
 # ==============================================================================
-# Connection details — never hardcode credentials in the script itself.
+# Credentials & Configuration (Retrieved via Databricks Secret Scope)
 # ==============================================================================
-AIVEN_BOOTSTRAP = "kafka-26f2fbb0-mrs-224b.e.aivencloud.com:17355"  
-AIVEN_USER = spark.conf.get("aiven.username")
-AIVEN_PASSWORD = spark.conf.get("aiven.password")
+SECRET_SCOPE = "aiven"
+
+AIVEN_BOOTSTRAP = "kafka-26f2fbb0-mrs-224b.e.aivencloud.com:17355"
+AIVEN_USER = dbutils.secrets.get(scope=SECRET_SCOPE, key="kafka-username")
+AIVEN_PASSWORD = dbutils.secrets.get(scope=SECRET_SCOPE, key="kafka-password")
+
 TOPIC_NAME = "restaurant-orders"
 CA_CERT_PATH = "/Volumes/zaferan_sofreh/bronze/kafka_certs/ca.pem"
 
 jaas_config = (
-    f"kafkashaded.org.apache.kafka.common.security.scram.ScramLoginModule required "
+    "kafkashaded.org.apache.kafka.common.security.scram.ScramLoginModule required "
     f'username="{AIVEN_USER}" password="{AIVEN_PASSWORD}";'
 )
 
 # ==============================================================================
-# Schema definitions
+# Schema Definitions
 # ==============================================================================
-# Kept for silver's use when it parses `items` out of the raw string —
-# not applied to `items` here (see design note above).
-order_item_schema = StructType(
-    [
-        StructField("item_id", StringType(), True),
-        StructField("name", StringType(), True),
-        StructField("category", StringType(), True),
-        StructField("quantity", IntegerType(), True),
-        StructField("unit_price", DoubleType(), True),
-        StructField("subtotal", DoubleType(), True),
-    ]
-)
-
 order_schema = StructType(
     [
         StructField("order_id", StringType(), True),
@@ -84,7 +46,7 @@ order_schema = StructType(
         StructField("restaurant_id", StringType(), True),
         StructField("customer_id", StringType(), True),
         StructField("order_type", StringType(), True),
-        StructField("items", StringType(), True),  
+        StructField("items", StringType(), True),
         StructField("total_amount", DoubleType(), True),
         StructField("payment_method", StringType(), True),
         StructField("order_status", StringType(), True),
@@ -93,9 +55,9 @@ order_schema = StructType(
 )
 
 # ==============================================================================
-# Streaming table definition
+# Streaming Table Definition
 # ==============================================================================
-@dp.table(
+@dlt.table(
     name="restaurant_orders_stream_bronze",
     comment="Bronze streaming table: raw restaurant orders from Aiven Kafka",
 )
@@ -125,7 +87,7 @@ def restaurant_orders_stream_bronze():
         )
         .select(
             col("kafka_key"),
-            col("raw_json_payload"),  
+            col("raw_json_payload"),
             from_json(col("raw_json_payload"), order_schema).alias("data"),
             col("timestamp").alias("kafka_timestamp"),
             col("partition"),

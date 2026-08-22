@@ -1,3 +1,10 @@
+"""
+databricks/02_transformation/02_fact_orders.py
+------------------------------------------------------
+This code reads the unified silver orders table, applies additional transformations and quality checks,
+ and writes the result to a fact_orders table.The pipeline engine manages checkpointing and incremental 
+ writes automatically —
+"""
 from pyspark.sql.functions import *
 from pyspark.sql.types import *
 from pyspark import pipelines as dp

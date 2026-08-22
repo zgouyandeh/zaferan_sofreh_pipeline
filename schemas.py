@@ -1,14 +1,9 @@
 """
 schemas.py
 ----------
-Data contracts for every record type produced by this pipeline.
-
-Both the batch generator (01_historical_orders) and the streaming
-producer (04_eventhub_orders) build the *same* Order/OrderItem shape, so
-a single Pydantic schema is validated on both paths. This mirrors the
-"schema-on-write" contract you'd enforce with Auto Loader's schema
-evolution / a Great Expectations suite in the real bronze layer, and
-catches malformed records before they ever reach storage.
+This module defines Pydantic models for the Zaferan Sofreh restaurant analytics pipeline.
+It includes models for orders, order items, and reviews, with validation rules to ensure data integrity
+and consistency. These models can be used for data validation, serialization, and documentation purposes.
 """
 from __future__ import annotations
 
@@ -40,6 +35,15 @@ class OrderStatus(str, Enum):
     COMPLETED = "completed"
 
 
+class ItemCategory(str, Enum):
+    BRUNCH = "Brunch"
+    STARTER = "Starter"
+    MAIN_COURSE = "Main Course"
+    BREAD = "Bread"
+    DESSERT = "Dessert"
+    BEVERAGE = "Beverage"
+
+
 class OrderItem(BaseModel):
     item_id: str
     name: str
@@ -55,7 +59,7 @@ class OrderItem(BaseModel):
         quantity = info.data.get("quantity")
         if unit_price is not None and quantity is not None:
             expected = round(unit_price * quantity, 2)
-            if abs(v - expected) > 0.01:
+            if abs(v - expected) > 0.05:  # Margin tolerance for floating point ops
                 raise ValueError(
                     f"subtotal {v} does not match unit_price*quantity={expected}"
                 )

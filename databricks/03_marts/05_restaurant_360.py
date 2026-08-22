@@ -1,3 +1,10 @@
+"""
+databricks/03_marts/05_restaurant_360.py
+------------------------------------------------------
+This code reads the silver dim_restaurant, fact_orders, and fact_review tables, applies aggregations and quality checks,
+and writes the result to a restaurant_360 table.
+It cr11eates a comprehensive 360-degree view of each restaurant, including order statistics, customer loyalty metrics,
+""" 
 from pyspark.sql import functions as F
 from pyspark.sql import Window
 from pyspark import pipelines as dp
@@ -31,8 +38,6 @@ def restaurant_360():
 
     # ======================================================
     # 1. Customer loyalty statistics
-    # FIX: avg_orders_per_customer now lives directly on
-    # repeat_stats, so it actually reaches the final table.
     # ======================================================
 
     customer_order_counts = (
@@ -93,10 +98,6 @@ def restaurant_360():
 
     # ======================================================
     # 4. Review analytics
-    #
-    # Each issue category now gets BOTH signals:
-    #   - *_complaint_count: how often it happens (frequency)
-    #   - avg_*_severity: how bad it is WHEN it happens (intensity)
     # ======================================================
 
     review_stats = (
@@ -151,10 +152,6 @@ def restaurant_360():
 
     # ======================================================
     # 6. Fill true zeros BEFORE deriving ratios from them
-    #
-    # FIX: this now happens before delivery_order_ratio is
-    # computed, so a restaurant with orders but zero delivery
-    # orders correctly gets 0.0, not null.
     # ======================================================
 
     restaurant_profile = restaurant_profile.fillna(
@@ -175,9 +172,6 @@ def restaurant_360():
             "positive_ratio": 0,
             "negative_ratio": 0,
         }
-        # avg_order_value, last_order_date, days_since_last_order,
-        # avg_rating, avg_*_severity deliberately NOT filled — these
-        # are genuinely unknown with no data, not zero.
     )
 
     # ======================================================
@@ -202,9 +196,6 @@ def restaurant_360():
         )
         .withColumn("rating_score_raw", (F.col("avg_rating") - 1) / 4)
         .withColumn("quality_score_raw", 1 - (F.col("avg_food_quality_severity") / 3))
-        # Confidence-weighted toward neutral 0.5 — same pattern as
-        # customer_restaurant_preference, so a restaurant with 1
-        # review can't swing to a perfect or terrible score outright.
         .withColumn(
             "rating_score",
             F.coalesce(

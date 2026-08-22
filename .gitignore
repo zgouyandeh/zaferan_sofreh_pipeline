@@ -1,1 +1,29 @@
-.env 
+# --- Secrets ---
+.env
+*.pem
+ca.pem
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+
+# --- Data ---
+data/
+*.csv
+
+# --- Databricks Asset Bundles ---
+.databricks/
+build/
+dist/
+
+# --- OS / Editor & Local Docs ---
+.DS_Store
+.vscode/
+.idea/
+learn.md
+dashborad.md

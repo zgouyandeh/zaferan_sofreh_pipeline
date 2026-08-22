@@ -1,3 +1,11 @@
+"""
+databricks/02_transformation/03_fact_orders_item.py
+------------------------------------------------------
+This code reads the unified silver orders table, explodes the items array into individual rows, 
+applies additional transformations and quality checks, and writes the result to a fact_order_items table.
+ The pipeline engine manages checkpointing and incremental writes automatically —
+
+"""
 from pyspark.sql.functions import *
 from pyspark.sql.types import *
 from pyspark import pipelines as dp

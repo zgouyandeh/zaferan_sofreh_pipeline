@@ -1,26 +1,7 @@
 """
-streaming/aiven_kafka_producer.py
+src/streaming/aiven_kafka_producer.py
 ------------------------------------
-Same order stream as eventhub_producer.py, sent to Aiven's managed Kafka
-instead of Azure Event Hub. Aiven is a reasonable Event-Hub substitute
-when you don't have an Azure subscription: its free tier gives you a
-SASL_SSL Kafka endpoint, and Databricks' `kafka` source format speaks
-the Kafka wire protocol directly — no Azure-specific connector needed
-on the read side either (see databricks/stream_orders_from_aiven.py).
-
-Credentials are read from environment variables — never hardcode a
-broker password in the script itself. Put them in a local .env
-(gitignored) or your platform's secret manager:
-
-    AIVEN_BOOTSTRAP_SERVERS=kafka-xxxx.aivencloud.com:PORT
-    AIVEN_USERNAME=avnadmin
-    AIVEN_PASSWORD=...
-    AIVEN_TOPIC=restaurant-orders
-    AIVEN_CA_CERT_PATH=./certs/ca.pem   # optional, see note below
-
-Usage:
-    python -m streaming.aiven_kafka_producer --dry-run --interval 2
-    python -m streaming.aiven_kafka_producer --interval 3 --max-orders 100
+This script streams synthetic restaurant orders to Aiven's managed Kafka service. 
 """
 from __future__ import annotations
 
@@ -32,7 +13,7 @@ import time
 
 from config import CONFIG
 from logging_setup import get_logger
-from streaming.order_factory import generate_order, load_reference_data
+from src.streaming.order_factory import generate_order, load_reference_data
 
 logger = get_logger(__name__)
 

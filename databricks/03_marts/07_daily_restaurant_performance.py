@@ -1,3 +1,15 @@
+"""
+databricks/03_marts/07_daily_restaurant_performance.py
+------------------------------------------------------
+This code reads the silver fact_orders, fact_review, and dim_restaurant tables,
+applies aggregations and quality checks, and writes the result to a
+daily_restaurant_performance table.
+It creates a daily aggregated view of restaurant performance, including order
+counts, revenue, unique customers, average order value, and review statistics,
+which can be used for dynamic dashboard filtering and analysis of restaurant
+performance trends over time.
+"""
+
 from pyspark.sql import functions as F
 from pyspark import pipelines as dp
 
@@ -10,6 +22,7 @@ def daily_restaurant_performance():
 
     df_orders = spark.table("zaferan_sofreh.silver.fact_orders")
     df_reviews = spark.table("zaferan_sofreh.silver.fact_review")
+    df_restaurants = spark.table("zaferan_sofreh.silver.dim_restaurant")
 
     valid_orders = (
         df_orders.filter(F.col("order_status").isin("completed", "delivered"))
@@ -39,12 +52,6 @@ def daily_restaurant_performance():
 
     # =====================================================
     # Daily review performance
-    #
-    # NOTE: joined on activity_date, but this reflects when a
-    # review was SUBMITTED, not when the order it discusses was
-    # placed (reviews land 1-7 days after their order per the
-    # generator). This is "review volume that day," not "reviews
-    # about orders placed that day" — don't read it as the latter.
     # =====================================================
 
     daily_reviews = (
@@ -85,13 +92,47 @@ def daily_restaurant_performance():
     )
 
     # =====================================================
+    # Restaurant static context — for cross-restaurant pooling
+    # in the future panel forecasting model. opening_date is
+    # fixed per restaurant; restaurant_age_days is therefore
+    # a deterministic, non-leaky function of activity_date and
+    # is safe to use as a forecasting feature at any horizon.
+    # =====================================================
+
+    restaurant_context = (
+        df_restaurants
+        .select(
+            "restaurant_id",
+            F.col("city").alias("restaurant_city"),
+            "opening_date",
+        )
+    )
+
+    # =====================================================
+    # Calendar features — same convention as fact_orders
+    # (Friday = weekend), computed once here.
+    # =====================================================
+
+    calendar_features = date_scaffold.withColumn(
+        "day_of_week", F.date_format(F.col("activity_date"), "EEEE")
+    ).withColumn(
+        "is_weekend", F.when(F.col("day_of_week") == "Friday", True).otherwise(False)
+    )
+
+    # =====================================================
     # Final daily performance table
     # =====================================================
 
     return (
-        date_scaffold
+        calendar_features
         .join(daily_sales, on=["restaurant_id", "activity_date"], how="left")
         .join(daily_reviews, on=["restaurant_id", "activity_date"], how="left")
+        .join(restaurant_context, on="restaurant_id", how="left")
+        .withColumn(
+            "restaurant_age_days",
+            F.datediff(F.col("activity_date"), F.col("opening_date")),
+        )
+        .drop("opening_date")
         .fillna(
             {
                 "daily_orders": 0,
@@ -101,9 +142,5 @@ def daily_restaurant_performance():
                 "delivery_revenue": 0,
                 "daily_reviews": 0,
             }
-            # avg_order_value, daily_avg_rating, daily_positive_ratio,
-            # daily_negative_ratio deliberately NOT filled — a day
-            # with zero orders/reviews has no meaningful average,
-            # that's genuinely null, not 0.
         )
     )

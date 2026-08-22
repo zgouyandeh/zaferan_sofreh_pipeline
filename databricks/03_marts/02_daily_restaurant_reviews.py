@@ -1,3 +1,9 @@
+"""
+Databricks/03_marts/02_daily_restaurant_reviews.py
+------------------------------------------------------
+This code reads the silver fact_review table, applies aggregations and quality checks, 
+and writes the result to a daily_restaurant_reviews materialized view.
+"""
 from pyspark import pipelines as dp
 from pyspark.sql.functions import *
 from pyspark.sql.types import *

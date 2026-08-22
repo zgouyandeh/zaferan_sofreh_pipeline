@@ -1,3 +1,12 @@
+"""
+databrikcs/03_marts/03_customer_restaurant_preference.py
+------------------------------------------------------
+This code reads the silver fact_orders and fact_review tables, applies aggregations and quality checks, 
+and writes the result to a customer_restaurant_preference table.
+It calculates a preference score for each customer-restaurant pair based on order history, recency, and review sentiment, and ranks restaurants for each customer.
+
+"""
+
 from pyspark.sql import Window
 from pyspark.sql import functions as F
 from pyspark import pipelines as dp
@@ -116,13 +125,6 @@ def customer_restaurant_preference():
 
     # ========================================================
     # 6. Combine order + review profiles
-    #
-    # NOTE: severity columns are NOT filled with 0 here anymore.
-    # A restaurant with zero reviews should not automatically get
-    # a "perfect, no issues" severity score — that's handled by
-    # the same confidence-weighting used for rating_score, in
-    # step 14. Only counters/ratios that are genuinely 0 when
-    # absent are filled here.
     # ========================================================
 
     profile = (
@@ -225,13 +227,6 @@ def customer_restaurant_preference():
 
     # ========================================================
     # 14. Food quality / pricing / portion scores
-    #
-    # FIX: these are now confidence-weighted exactly like
-    # rating_score in step 12. A restaurant with zero reviews
-    # gets a neutral 0.5, not a free "perfect" 1.0 — previously,
-    # fillna(0.0) on severity meant "no reviews" silently scored
-    # BETTER than a restaurant that was actually reviewed and had
-    # even one minor issue, which is backwards.
     # ========================================================
 
     profile = (
@@ -311,14 +306,6 @@ def customer_restaurant_preference():
 
     # ========================================================
     # 17. Rank restaurants for each customer
-    #
-    # FIX 1: order by is_eligible FIRST, so eligible rows always
-    # sort ahead of non-eligible ones regardless of score — a
-    # non-eligible restaurant with 1 lucky order can never steal
-    # rank 1 from a genuinely eligible restaurant anymore.
-    #
-    # FIX 2: row_number() instead of rank(), so ties can never
-    # produce two "preferred" rows for the same customer.
     # ========================================================
 
     preference_window = (

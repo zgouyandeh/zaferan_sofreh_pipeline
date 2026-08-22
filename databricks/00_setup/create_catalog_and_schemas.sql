@@ -1,22 +1,16 @@
 -- databricks/00_setup/create_catalog_and_schemas.sql
--- -----------------------------------------------------------------------
--- One-time setup. Run this once (as a workspace admin / whoever has
--- CREATE CATALOG rights) before running anything under 01_ingestion/.
---
--- Layout:
---   zaferan_sofreh.bronze        raw landed data, one table per source
---   zaferan_sofreh.silver        cleaned/conformed tables (future work)
---   zaferan_sofreh.gold          aggregates/KPIs (future work)
---   zaferan_sofreh._checkpoints  streaming checkpoints only — kept out of
---                                 bronze so cleaning up data never risks
---                                 wiping checkpoint state you still need
--- -----------------------------------------------------------------------
-
+--DROP CATALOG IF EXISTS zaferan_sofreh CASCADE;
 CREATE CATALOG IF NOT EXISTS zaferan_sofreh;
 
+-- Medallion Schemas
 CREATE SCHEMA IF NOT EXISTS zaferan_sofreh.bronze;
 CREATE SCHEMA IF NOT EXISTS zaferan_sofreh.silver;
-CREATE SCHEMA IF NOT EXISTS zaferan_sofreh.gold;
+CREATE SCHEMA IF NOT EXISTS zaferan_sofreh.gold_v2;
+
+-- Advanced Analytics / Machine Learning Schema (SARIMA & Forecasts)
+CREATE SCHEMA IF NOT EXISTS zaferan_sofreh.platinum;
+
+-- System / Operational Schemas
 CREATE SCHEMA IF NOT EXISTS zaferan_sofreh._checkpoints;
 
 -- Volume for the Aiven CA certificate (uploaded manually via the

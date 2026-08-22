@@ -1,0 +1,39 @@
+# resources/zaferan_sofreh_forecast_job.yml
+# ------------------------------------------
+
+resources:
+  jobs:
+    zaferan_sofreh_revenue_forecast_job:
+      name: zaferan_sofreh_revenue_forecast_job
+      description: >
+        Fits one ARIMAX model per restaurant (Pandas UDF, parallel across
+        Spark workers) against zaferan_sofreh.gold_v2.daily_restaurant_performance,
+        writing 14-day forecasts and diagnostics to the Platinum schema.
+        Run this AFTER the medallion pipeline's own scheduled refresh
+        (zaferan_sofreh_reference_load_job, default 03:00) so it reads a
+        current daily_restaurant_performance table.
+
+      tasks:
+        - task_key: forecast_revenue_per_restaurant
+          notebook_task:
+            notebook_path: ../databricks/04_analytics/01_sarima_revenue_forecast.py
+          new_cluster:
+            spark_version: 15.4.x-scala2.12
+            node_type_id: ${var.forecast_job_node_type_id}
+            num_workers: 2
+            data_security_mode: SINGLE_USER
+          libraries:
+            # statsmodels is not preinstalled on standard Databricks Runtime --
+            # required for SARIMAX, ADF, and Ljung-Box.
+            - pypi:
+                package: statsmodels>=0.14
+
+      schedule:
+        quartz_cron_expression: ${var.forecast_job_schedule_cron}
+        timezone_id: UTC
+        pause_status: PAUSED  # flip to UNPAUSED once a run has been verified manually
+
+      # Optional: wire this job to run only after the reference-load job's
+      # pipeline refresh completes, instead of on an independent schedule --
+      # requires Databricks Workflows job-to-job dependencies if you want
+      # a strict ordering guarantee rather than a time-offset schedule.
